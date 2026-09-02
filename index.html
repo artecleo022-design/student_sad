@@ -4,107 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Record Management System</title>
-    <!-- Google Fonts for clean typography -->
+    
+    <!-- Modern Typography: Plus Jakarta Sans & Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Header -->
+    <!-- Ambient Glowing Background Elements -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
+    <!-- Header Section -->
     <header class="header">
-        <div class="header-content">
-            <h1>📚 Student Record Management System</h1>
-            <p>Simple & Efficient Student Information Management</p>
+        <div class="header-container">
+            <div class="header-badge">
+                <span class="pulse-dot"></span>
+                <span>Supabase PostgreSQL Active</span>
+            </div>
+            <h1>Student Record <span>Management System</span></h1>
+            <p>A streamlined cloud portal to create, view, search, modify, and manage student records</p>
         </div>
     </header>
 
     <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <div class="container">
+    <main class="container">
 
         <!-- Form Card: Add Student -->
-        <div class="card form-card">
+        <section class="card form-card">
             <div class="card-header">
-                <h2>➕ Add New Student</h2>
+                <div class="header-title-wrap">
+                    <div class="header-icon-box">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </div>
+                    <div>
+                        <h2>Enroll New Student</h2>
+                        <span class="card-subtitle">Enter student credentials to save to database</span>
+                    </div>
+                </div>
             </div>
+            
             <div class="card-body">
                 <form id="studentForm" class="student-form">
                     <div class="form-grid">
+                        
                         <div class="form-group">
                             <label for="studentId">Student ID <span class="required">*</span></label>
-                            <input type="text" id="studentId" placeholder="e.g. 2024-0001" required>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-id-badge input-ico"></i>
+                                <input type="text" id="studentId" placeholder="e.g. 2024-0001" required autocomplete="off">
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label for="fullName">Full Name <span class="required">*</span></label>
-                            <input type="text" id="fullName" placeholder="e.g. Juan Dela Cruz" required>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-user input-ico"></i>
+                                <input type="text" id="fullName" placeholder="e.g. Juan Dela Cruz" required autocomplete="off">
+                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="program">Program <span class="required">*</span></label>
-                            <input type="text" id="program" placeholder="e.g. BSIT" required>
+                            <label for="program">Degree / Program <span class="required">*</span></label>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-graduation-cap input-ico"></i>
+                                <input type="text" id="program" placeholder="e.g. BS Information Technology" required autocomplete="off">
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label for="yearLevel">Year Level <span class="required">*</span></label>
-                            <select id="yearLevel" required>
-                                <option value="" disabled selected>Select Year Level</option>
-                                <option value="1">1st Year</option>
-                                <option value="2">2nd Year</option>
-                                <option value="3">3rd Year</option>
-                                <option value="4">4th Year</option>
-                                <option value="5">5th Year</option>
-                                <option value="6">6th Year</option>
-                            </select>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-layer-group input-ico"></i>
+                                <select id="yearLevel" required>
+                                    <option value="" disabled selected>Select Year Level</option>
+                                    <option value="1">1st Year</option>
+                                    <option value="2">2nd Year</option>
+                                    <option value="3">3rd Year</option>
+                                    <option value="4">4th Year</option>
+                                    <option value="5">5th Year</option>
+                                    <option value="6">6th Year</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="form-group form-group-full">
                             <label for="email">Email Address <span class="required">*</span></label>
-                            <input type="email" id="email" placeholder="e.g. juan@email.com" required>
+                            <div class="input-with-icon">
+                                <i class="fa-solid fa-envelope input-ico"></i>
+                                <input type="email" id="email" placeholder="e.g. juan.delacruz@school.edu.ph" required autocomplete="off">
+                            </div>
                         </div>
+
                     </div>
 
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary" id="saveBtn">
-                            💾 Save Student
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Save Student</span>
                         </button>
                         <button type="reset" class="btn btn-secondary">
-                            🔄 Clear
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>Clear</span>
                         </button>
                     </div>
                 </form>
             </div>
-        </div>
+        </section>
 
         <!-- Table Card: Student Records -->
-        <div class="card table-card">
+        <section class="card table-card">
             <div class="card-header flex-between">
-                <h2>📋 Student Records</h2>
+                <div class="header-title-wrap">
+                    <div class="header-icon-box purple-icon">
+                        <i class="fa-solid fa-address-book"></i>
+                    </div>
+                    <div>
+                        <h2>Student Directory</h2>
+                        <span class="card-subtitle">Real-time records from PostgreSQL database</span>
+                    </div>
+                </div>
                 <span class="record-badge" id="recordCount">0 records</span>
             </div>
 
             <div class="card-body">
                 <!-- Search Bar -->
                 <div class="search-box">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="searchInput" placeholder="Search by Student ID or Name...">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search by Student ID, Name, or Program...">
                 </div>
 
-                <!-- Table -->
+                <!-- Table Wrapper -->
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
-                                <th>#</th>
-                                <th>Student ID</th>
+                                <th style="width: 50px;">#</th>
+                                <th style="width: 140px;">Student ID</th>
                                 <th>Full Name</th>
                                 <th>Program</th>
-                                <th>Year Level</th>
+                                <th style="width: 110px; text-align: center;">Year Level</th>
                                 <th>Email</th>
-                                <th>Actions</th>
+                                <th style="width: 150px; text-align: center;">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="studentTableBody">
@@ -115,26 +165,39 @@
 
                 <!-- Loading Spinner -->
                 <div class="loading" id="loadingSpinner" style="display: none;">
-                    <div class="spinner"></div>
-                    <p>Loading records from Supabase...</p>
+                    <div class="spinner-ring"></div>
+                    <p>Fetching records from Supabase...</p>
                 </div>
 
                 <!-- Empty State -->
                 <div class="empty-state" id="emptyState" style="display: none;">
-                    <div class="empty-icon">📭</div>
-                    <p>No student records found. Add a student above to get started!</p>
+                    <div class="empty-icon-circle">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                    <h3>No Records Found</h3>
+                    <p>There are no students listed yet. Fill in the form above to add a student.</p>
                 </div>
             </div>
-        </div>
+        </section>
 
-    </div>
+    </main>
 
     <!-- Edit Student Modal -->
     <div class="modal-overlay" id="editModal">
         <div class="modal">
             <div class="modal-header">
-                <h2>✏️ Edit Student Information</h2>
-                <button type="button" class="modal-close" onclick="closeModal()">✕</button>
+                <div class="modal-title-group">
+                    <div class="modal-icon">
+                        <i class="fa-solid fa-user-pen"></i>
+                    </div>
+                    <div>
+                        <h2>Edit Student Information</h2>
+                        <p>Modify and sync changes with Supabase</p>
+                    </div>
+                </div>
+                <button type="button" class="modal-close" onclick="closeModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
             <form id="editForm">
                 <div class="modal-body">
@@ -142,40 +205,58 @@
 
                     <div class="form-group">
                         <label for="editStudentId">Student ID <span class="required">*</span></label>
-                        <input type="text" id="editStudentId" required>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-id-badge input-ico"></i>
+                            <input type="text" id="editStudentId" required>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label for="editFullName">Full Name <span class="required">*</span></label>
-                        <input type="text" id="editFullName" required>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-user input-ico"></i>
+                            <input type="text" id="editFullName" required>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label for="editProgram">Program <span class="required">*</span></label>
-                        <input type="text" id="editProgram" required>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-graduation-cap input-ico"></i>
+                            <input type="text" id="editProgram" required>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label for="editYearLevel">Year Level <span class="required">*</span></label>
-                        <select id="editYearLevel" required>
-                            <option value="1">1st Year</option>
-                            <option value="2">2nd Year</option>
-                            <option value="3">3rd Year</option>
-                            <option value="4">4th Year</option>
-                            <option value="5">5th Year</option>
-                            <option value="6">6th Year</option>
-                        </select>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-layer-group input-ico"></i>
+                            <select id="editYearLevel" required>
+                                <option value="1">1st Year</option>
+                                <option value="2">2nd Year</option>
+                                <option value="3">3rd Year</option>
+                                <option value="4">4th Year</option>
+                                <option value="5">5th Year</option>
+                                <option value="6">6th Year</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label for="editEmail">Email Address <span class="required">*</span></label>
-                        <input type="email" id="editEmail" required>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-envelope input-ico"></i>
+                            <input type="email" id="editEmail" required>
+                        </div>
                     </div>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary" id="updateBtn">💾 Update Student</button>
+                    <button type="submit" class="btn btn-primary" id="updateBtn">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Update Student</span>
+                    </button>
                 </div>
             </form>
         </div>

@@ -29,9 +29,14 @@ const toastContainer = document.getElementById('toastContainer');
 // Toast Notifications
 // ──────────────────────────────────────────────
 function showToast(message, type = 'success') {
+    const icons = {
+        success: '<i class="fa-solid fa-circle-check"></i>',
+        error: '<i class="fa-solid fa-circle-exclamation"></i>',
+        info: '<i class="fa-solid fa-circle-info"></i>'
+    };
     const toast = document.createElement('div');
     toast.className = `toast toast-${type}`;
-    toast.textContent = message;
+    toast.innerHTML = `${icons[type] || ''} <span>${escapeHtml(message)}</span>`;
     toastContainer.appendChild(toast);
 
     setTimeout(() => {
@@ -91,16 +96,16 @@ function renderStudents(students) {
     students.forEach((student, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${index + 1}</td>
+            <td style="color: var(--text-light); font-size: 0.8rem;">${index + 1}</td>
             <td><span class="id-badge">${escapeHtml(student.student_id)}</span></td>
-            <td><strong>${escapeHtml(student.full_name)}</strong></td>
+            <td><strong style="color: var(--text-heading);">${escapeHtml(student.full_name)}</strong></td>
             <td><span class="program-tag">${escapeHtml(student.program)}</span></td>
-            <td><span class="year-tag">${student.year_level}</span></td>
-            <td>${escapeHtml(student.email)}</td>
+            <td style="text-align: center;"><span class="year-tag">${student.year_level}</span></td>
+            <td style="color: var(--text-muted); font-size: 0.86rem;">${escapeHtml(student.email)}</td>
             <td>
                 <div class="actions">
-                    <button class="btn btn-edit" onclick="openEditModal(${student.id})">✏️ Edit</button>
-                    <button class="btn btn-delete" onclick="deleteStudent(${student.id}, '${escapeHtml(student.full_name)}')">🗑️ Delete</button>
+                    <button class="btn btn-edit" onclick="openEditModal(${student.id})"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+                    <button class="btn btn-delete" onclick="deleteStudent(${student.id}, '${escapeHtml(student.full_name)}')"><i class="fa-solid fa-trash-can"></i> Delete</button>
                 </div>
             </td>
         `;
