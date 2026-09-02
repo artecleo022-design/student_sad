@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- FontAwesome 6 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -17,6 +17,12 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Lively Animated Background Mesh Orbs -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+    <div class="bg-mesh-grid"></div>
 
     <!-- Toast Notification Container -->
     <div class="toast-container" id="toastContainer"></div>
@@ -31,8 +37,8 @@
                         <i class="fa-solid fa-graduation-cap"></i>
                     </div>
                     <div class="brand-info">
-                        <h2>Student<span>Record</span></h2>
-                        <p>Management System</p>
+                        <h2>Student<span>Rec</span></h2>
+                        <p>Management Portal</p>
                     </div>
                 </div>
                 <button class="sidebar-close" id="sidebarClose" onclick="toggleSidebar()">
@@ -41,22 +47,22 @@
             </div>
 
             <nav class="sidebar-nav">
-                <div class="nav-title">Navigation Menu</div>
+                <div class="nav-title">Menu Navigation</div>
                 <a href="javascript:void(0)" class="nav-link active" id="navDashboard" onclick="switchView('dashboard')">
-                    <i class="fa-solid fa-chart-pie"></i>
+                    <div class="nav-icon-wrap"><i class="fa-solid fa-chart-pie"></i></div>
                     <span>Dashboard</span>
                 </a>
                 <a href="javascript:void(0)" class="nav-link" id="navAdd" onclick="switchView('add')">
-                    <i class="fa-solid fa-user-plus"></i>
+                    <div class="nav-icon-wrap"><i class="fa-solid fa-user-plus"></i></div>
                     <span>Add Student</span>
                 </a>
                 <a href="javascript:void(0)" class="nav-link" id="navRecords" onclick="switchView('records')">
-                    <i class="fa-solid fa-table-list"></i>
+                    <div class="nav-icon-wrap"><i class="fa-solid fa-table-list"></i></div>
                     <span>Student Records</span>
                     <span class="nav-badge" id="navBadge">0</span>
                 </a>
 
-                <div class="nav-title">System Status</div>
+                <div class="nav-title">Live Database</div>
                 <div class="db-card">
                     <div class="db-header">
                         <span class="pulse-dot"></span>
@@ -93,7 +99,7 @@
                         <div class="breadcrumb">
                             <span>System</span>
                             <i class="fa-solid fa-angle-right"></i>
-                            <span class="active-crumb" id="viewBreadcrumb">Analytics</span>
+                            <span class="active-crumb" id="viewBreadcrumb">Analytics & Summary</span>
                         </div>
                     </div>
                 </div>
@@ -110,49 +116,77 @@
                 </div>
             </header>
 
-            <!-- Main Page Content (Separate Views) -->
+            <!-- Main Page Content (Separated Views) -->
             <main class="page-content">
 
                 <!-- ============================================
-                     VIEW 1: DASHBOARD OVERVIEW
+                     VIEW 1: DASHBOARD (EXCLUSIVE)
                      ============================================ -->
                 <div class="app-view active" id="viewDashboard">
+                    
+                    <!-- Welcome Hero Card -->
+                    <section class="card welcome-hero">
+                        <div class="welcome-content">
+                            <div class="welcome-badge">
+                                <i class="fa-solid fa-bolt"></i> <span>Live Cloud Sync Active</span>
+                            </div>
+                            <h2>Welcome to <span>Student Management System</span></h2>
+                            <p>Manage, search, update, and track student records effortlessly with real-time PostgreSQL database synchronization.</p>
+                            
+                            <div class="welcome-actions">
+                                <button class="btn btn-primary" onclick="switchView('add')">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                    <span>Enroll New Student</span>
+                                </button>
+                                <button class="btn btn-glass" onclick="switchView('records')">
+                                    <i class="fa-solid fa-table-list"></i>
+                                    <span>Browse Directory</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="welcome-graphic">
+                            <div class="graphic-circle">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                        </div>
+                    </section>
+
                     <!-- Dashboard 4 Stat Cards -->
                     <section class="dashboard-grid">
-                        <div class="stat-card" onclick="switchView('records')" style="cursor: pointer;" title="View all records">
+                        <div class="stat-card emerald-card" onclick="switchView('records')" title="Click to view all records">
                             <div class="stat-info">
                                 <span class="stat-label">Total Students</span>
                                 <h3 class="stat-value" id="statTotal">0</h3>
-                                <span class="stat-desc"><i class="fa-solid fa-users"></i> Registered</span>
+                                <span class="stat-desc"><i class="fa-solid fa-circle-check"></i> Enrolled Records</span>
                             </div>
                             <div class="stat-icon emerald">
                                 <i class="fa-solid fa-user-graduate"></i>
                             </div>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card cyan-card">
                             <div class="stat-info">
                                 <span class="stat-label">Total Programs</span>
                                 <h3 class="stat-value" id="statPrograms">0</h3>
-                                <span class="stat-desc"><i class="fa-solid fa-book-bookmark"></i> Academic Courses</span>
+                                <span class="stat-desc"><i class="fa-solid fa-book-bookmark"></i> Active Courses</span>
                             </div>
                             <div class="stat-icon cyan">
                                 <i class="fa-solid fa-diagram-project"></i>
                             </div>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card purple-card">
                             <div class="stat-info">
                                 <span class="stat-label">Average Year</span>
                                 <h3 class="stat-value" id="statAvgYear">0.0</h3>
-                                <span class="stat-desc"><i class="fa-solid fa-chart-line"></i> Year Distribution</span>
+                                <span class="stat-desc"><i class="fa-solid fa-layer-group"></i> Distribution</span>
                             </div>
                             <div class="stat-icon purple">
-                                <i class="fa-solid fa-layer-group"></i>
+                                <i class="fa-solid fa-arrow-trend-up"></i>
                             </div>
                         </div>
 
-                        <div class="stat-card">
+                        <div class="stat-card amber-card">
                             <div class="stat-info">
                                 <span class="stat-label">Last Updated</span>
                                 <h3 class="stat-value small-date" id="statRecentDate">—</h3>
@@ -164,29 +198,10 @@
                         </div>
                     </section>
 
-                    <!-- Quick Navigation Banner / Quick Actions -->
-                    <section class="card banner-card">
-                        <div class="banner-content">
-                            <div class="banner-text">
-                                <h2>Student Information Portal</h2>
-                                <p>Easily register new students or manage and search existing student records with real-time cloud sync.</p>
-                            </div>
-                            <div class="banner-buttons">
-                                <button class="btn btn-primary" onclick="switchView('add')">
-                                    <i class="fa-solid fa-user-plus"></i>
-                                    <span>Add New Student</span>
-                                </button>
-                                <button class="btn btn-secondary" onclick="switchView('records')">
-                                    <i class="fa-solid fa-table-list"></i>
-                                    <span>View Student Directory</span>
-                                </button>
-                            </div>
-                        </div>
-                    </section>
                 </div>
 
                 <!-- ============================================
-                     VIEW 2: ADD STUDENT ONLY
+                     VIEW 2: ADD STUDENT ONLY (EXCLUSIVE)
                      ============================================ -->
                 <div class="app-view" id="viewAdd">
                     <section class="card form-card">
@@ -197,7 +212,7 @@
                                 </div>
                                 <div>
                                     <h2>Enroll New Student</h2>
-                                    <span class="card-subtitle">Fill in student details to save to database</span>
+                                    <span class="card-subtitle">Fill in student credentials to store in Supabase</span>
                                 </div>
                             </div>
                         </div>
@@ -223,10 +238,10 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="program">Program <span class="required">*</span></label>
+                                        <label for="program">Degree / Program <span class="required">*</span></label>
                                         <div class="input-with-icon">
                                             <i class="fa-solid fa-graduation-cap input-ico"></i>
-                                            <input type="text" id="program" placeholder="e.g. BSIT" required autocomplete="off">
+                                            <input type="text" id="program" placeholder="e.g. BS Information Technology" required autocomplete="off">
                                         </div>
                                     </div>
 
@@ -250,20 +265,20 @@
                                         <label for="email">Email Address <span class="required">*</span></label>
                                         <div class="input-with-icon">
                                             <i class="fa-solid fa-envelope input-ico"></i>
-                                            <input type="email" id="email" placeholder="e.g. juan@email.com" required autocomplete="off">
+                                            <input type="email" id="email" placeholder="e.g. juan.delacruz@school.edu.ph" required autocomplete="off">
                                         </div>
                                     </div>
 
                                 </div>
 
                                 <div class="form-actions">
-                                    <button type="submit" class="btn btn-primary" id="saveBtn">
+                                    <button type="submit" class="btn btn-primary btn-glow" id="saveBtn">
                                         <i class="fa-solid fa-floppy-disk"></i>
                                         <span>Save Student</span>
                                     </button>
                                     <button type="reset" class="btn btn-secondary">
                                         <i class="fa-solid fa-rotate-left"></i>
-                                        <span>Clear</span>
+                                        <span>Clear Form</span>
                                     </button>
                                 </div>
                             </form>
@@ -272,7 +287,7 @@
                 </div>
 
                 <!-- ============================================
-                     VIEW 3: STUDENT RECORDS ONLY
+                     VIEW 3: STUDENT RECORDS ONLY (EXCLUSIVE)
                      ============================================ -->
                 <div class="app-view" id="viewRecords">
                     <section class="card table-card">
@@ -283,13 +298,13 @@
                                 </div>
                                 <div>
                                     <h2>Student Records Directory</h2>
-                                    <span class="card-subtitle">Real-time records from PostgreSQL database</span>
+                                    <span class="card-subtitle">Real-time synchronized data from PostgreSQL</span>
                                 </div>
                             </div>
                             <div class="header-actions">
                                 <button class="btn btn-primary btn-sm" onclick="switchView('add')">
                                     <i class="fa-solid fa-plus"></i>
-                                    <span>New Student</span>
+                                    <span>Enroll Student</span>
                                 </button>
                                 <span class="record-badge" id="recordCount">0 records</span>
                             </div>
@@ -299,7 +314,7 @@
                             <!-- Search Bar -->
                             <div class="search-box">
                                 <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                                <input type="text" id="searchInput" placeholder="Search by Student ID, Name, or Program...">
+                                <input type="text" id="searchInput" placeholder="Search by Student ID, Name, Program, or Email...">
                             </div>
 
                             <!-- Table Wrapper -->
@@ -313,7 +328,7 @@
                                             <th>Program</th>
                                             <th style="width: 110px; text-align: center;">Year Level</th>
                                             <th>Email</th>
-                                            <th style="width: 150px; text-align: center;">Actions</th>
+                                            <th style="width: 160px; text-align: center;">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody id="studentTableBody">
@@ -325,7 +340,7 @@
                             <!-- Loading Spinner -->
                             <div class="loading" id="loadingSpinner" style="display: none;">
                                 <div class="spinner-ring"></div>
-                                <p>Fetching records from Supabase...</p>
+                                <p>Syncing records with Supabase...</p>
                             </div>
 
                             <!-- Empty State -->
@@ -347,7 +362,7 @@
 
             <!-- Footer -->
             <footer class="footer">
-                <p>&copy; 2026 Student Record Management System • Connected to <strong>Supabase</strong></p>
+                <p>&copy; 2026 <strong>Student Record Management System</strong> • Connected with <strong>Supabase</strong> PostgreSQL</p>
             </footer>
 
         </div><!-- /main-wrapper -->
