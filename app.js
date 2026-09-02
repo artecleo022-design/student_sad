@@ -19,11 +19,62 @@ const studentForm = document.getElementById('studentForm');
 const studentTableBody = document.getElementById('studentTableBody');
 const searchInput = document.getElementById('searchInput');
 const recordCount = document.getElementById('recordCount');
+const navBadge = document.getElementById('navBadge');
 const loadingSpinner = document.getElementById('loadingSpinner');
 const emptyState = document.getElementById('emptyState');
 const editModal = document.getElementById('editModal');
 const editForm = document.getElementById('editForm');
 const toastContainer = document.getElementById('toastContainer');
+const refreshIcon = document.getElementById('refreshIcon');
+const currentTime = document.getElementById('currentTime');
+
+// Dashboard Stats Elements
+const statTotal = document.getElementById('statTotal');
+const statPrograms = document.getElementById('statPrograms');
+const statAvgYear = document.getElementById('statAvgYear');
+const statRecentDate = document.getElementById('statRecentDate');
+
+// ──────────────────────────────────────────────
+// Live Clock
+// ──────────────────────────────────────────────
+function updateClock() {
+    if (!currentTime) return;
+    const now = new Date();
+    currentTime.textContent = now.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ──────────────────────────────────────────────
+// Sidebar & Navigation
+// ──────────────────────────────────────────────
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) sidebar.classList.toggle('open');
+}
+
+function scrollToSection(sectionId) {
+    const el = document.getElementById(sectionId);
+    if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar && sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+    }
+
+    // Update active nav link
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${sectionId}`) {
+            link.classList.add('active');
+        }
+    });
+}
 
 // ──────────────────────────────────────────────
 // Toast Notifications
@@ -47,10 +98,46 @@ function showToast(message, type = 'success') {
 }
 
 // ──────────────────────────────────────────────
+// Dashboard Statistics Calculation
+// ──────────────────────────────────────────────
+function updateDashboardStats(students) {
+    const total = students.length;
+    if (statTotal) statTotal.textContent = total;
+    if (navBadge) navBadge.textContent = total;
+
+    // Unique Programs
+    const uniquePrograms = new Set(students.map(s => s.program ? s.program.trim() : '').filter(Boolean));
+    if (statPrograms) statPrograms.textContent = uniquePrograms.size;
+
+    // Average Year Level
+    if (total > 0) {
+        const sum = students.reduce((acc, s) => acc + (parseInt(s.year_level) || 0), 0);
+        if (statAvgYear) statAvgYear.textContent = (sum / total).toFixed(1);
+    } else {
+        if (statAvgYear) statAvgYear.textContent = '0.0';
+    }
+
+    // Most Recent Date
+    if (total > 0) {
+        const sorted = [...students].sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+        const latest = new Date(sorted[0].created_at);
+        if (statRecentDate) {
+            statRecentDate.textContent = isNaN(latest) ? 'Recent' : latest.toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+    } else {
+        if (statRecentDate) statRecentDate.textContent = '—';
+    }
+}
+
+// ──────────────────────────────────────────────
 // CRUD: READ - Fetch and Display Students
 // ──────────────────────────────────────────────
 async function fetchStudents(searchTerm = '') {
     showLoading(true);
+    if (refreshIcon) refreshIcon.classList.add('fa-spin');
 
     try {
         let query = db
@@ -61,7 +148,7 @@ async function fetchStudents(searchTerm = '') {
         // Apply search filter if provided
         if (searchTerm.trim()) {
             query = query.or(
-                `student_id.ilike.%${searchTerm}%,full_name.ilike.%${searchTerm}%`
+                `student_id.ilike.%${searchTerm}%,full_name.ilike.%${searchTerm}%,program.ilike.%${searchTerm}%`
             );
         }
 
@@ -69,13 +156,17 @@ async function fetchStudents(searchTerm = '') {
 
         if (error) throw error;
 
-        renderStudents(data || []);
+        const students = data || [];
+        renderStudents(students);
+        updateDashboardStats(students);
     } catch (err) {
         console.error('Error fetching students:', err);
         showToast('Failed to load students. Check Supabase connection.', 'error');
         renderStudents([]);
+        updateDashboardStats([]);
     } finally {
         showLoading(false);
+        if (refreshIcon) refreshIcon.classList.remove('fa-spin');
     }
 }
 
@@ -87,7 +178,7 @@ function renderStudents(students) {
 
     // Show empty state if no records
     if (students.length === 0) {
-        emptyState.style.display = 'block';
+        emptyState.style.display = 'flex';
         return;
     }
 
@@ -138,7 +229,7 @@ studentForm.addEventListener('submit', async (e) => {
 
     try {
         saveBtn.disabled = true;
-        saveBtn.textContent = 'Saving...';
+        saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
 
         const { error } = await db
             .from('students')
@@ -153,9 +244,9 @@ studentForm.addEventListener('submit', async (e) => {
             return;
         }
 
-        showToast('Student added successfully!', 'success');
+        showToast('Student enrolled successfully!', 'success');
         studentForm.reset();
-        fetchStudents(searchInput.value);
+        await fetchStudents(searchInput.value);
     } catch (err) {
         console.error('Error adding student:', err);
         showToast('Failed to add student. Please try again.', 'error');
@@ -229,7 +320,7 @@ editForm.addEventListener('submit', async (e) => {
 
     try {
         updateBtn.disabled = true;
-        updateBtn.textContent = 'Updating...';
+        updateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Updating...';
 
         const { error } = await db
             .from('students')
@@ -247,7 +338,7 @@ editForm.addEventListener('submit', async (e) => {
 
         showToast('Student updated successfully!', 'success');
         closeModal();
-        fetchStudents(searchInput.value);
+        await fetchStudents(searchInput.value);
     } catch (err) {
         console.error('Error updating student:', err);
         showToast('Failed to update student. Please try again.', 'error');
@@ -274,7 +365,7 @@ async function deleteStudent(id, name) {
         if (error) throw error;
 
         showToast(`"${name}" has been deleted.`, 'info');
-        fetchStudents(searchInput.value);
+        await fetchStudents(searchInput.value);
     } catch (err) {
         console.error('Error deleting student:', err);
         showToast('Failed to delete student. Please try again.', 'error');
@@ -289,7 +380,7 @@ searchInput.addEventListener('input', () => {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
         fetchStudents(searchInput.value);
-    }, 300);
+    }, 250);
 });
 
 // ──────────────────────────────────────────────
