@@ -419,16 +419,16 @@ h1, h2, h3, h4, h5 {
     flex-direction: column;
 }
 
-/* App View Containers */
+/* App View Containers (Strict Isolation) */
 .app-view {
-    display: none;
+    display: none !important;
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(10px);
     transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .app-view.active {
-    display: block;
+    display: block !important;
     opacity: 1;
     transform: translateY(0);
 }
