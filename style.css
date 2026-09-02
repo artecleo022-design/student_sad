@@ -1,10 +1,10 @@
 /* ==========================================================================
    STUDENT RECORD MANAGEMENT SYSTEM
-   Sidebar Navigation + Dedicated Views Theme
+   Clean, Modern & Fully Clickable Design System
    ========================================================================== */
 
 :root {
-    /* Brand Color Palette */
+    /* Color Palette */
     --primary: #10b981;
     --primary-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
     --primary-hover: #059669;
@@ -33,7 +33,7 @@
     --card-border: #e2e8f0;
     --card-hover-border: #cbd5e1;
 
-    /* Text Colors */
+    /* Typography */
     --text-heading: #0f172a;
     --text-body: #334155;
     --text-muted: #64748b;
@@ -43,8 +43,8 @@
     /* Shadows */
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 
     /* Radii */
     --radius-sm: 6px;
@@ -78,6 +78,7 @@ body {
     line-height: 1.6;
     min-height: 100vh;
     overflow-x: hidden;
+    position: relative;
 }
 
 h1, h2, h3, h4, h5 {
@@ -92,6 +93,8 @@ h1, h2, h3, h4, h5 {
 .app-layout {
     display: flex;
     min-height: 100vh;
+    position: relative;
+    z-index: 1;
 }
 
 /* Sidebar */
@@ -162,9 +165,10 @@ h1, h2, h3, h4, h5 {
     color: var(--text-light);
     font-size: 1.2rem;
     cursor: pointer;
+    padding: 4px;
 }
 
-/* Sidebar Navigation */
+/* Sidebar Navigation Links */
 .sidebar-nav {
     flex: 1;
     padding: 20px 14px;
@@ -195,6 +199,9 @@ h1, h2, h3, h4, h5 {
     font-weight: 500;
     transition: var(--transition);
     cursor: pointer;
+    user-select: none;
+    position: relative;
+    z-index: 10;
 }
 
 .nav-link i {
@@ -203,6 +210,11 @@ h1, h2, h3, h4, h5 {
     text-align: center;
     color: var(--text-light);
     transition: var(--transition);
+    pointer-events: none;
+}
+
+.nav-link span {
+    pointer-events: none;
 }
 
 .nav-link:hover {
@@ -233,6 +245,7 @@ h1, h2, h3, h4, h5 {
     font-weight: 700;
     padding: 2px 8px;
     border-radius: var(--radius-pill);
+    pointer-events: none;
 }
 
 /* Database Status Card in Sidebar */
@@ -327,6 +340,8 @@ h1, h2, h3, h4, h5 {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
+    z-index: 10;
 }
 
 /* Topbar */
@@ -340,7 +355,7 @@ h1, h2, h3, h4, h5 {
     justify-content: space-between;
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: 40;
     box-shadow: var(--shadow-sm);
 }
 
@@ -360,6 +375,8 @@ h1, h2, h3, h4, h5 {
     border-radius: var(--radius-sm);
     cursor: pointer;
     font-size: 1.1rem;
+    align-items: center;
+    justify-content: center;
 }
 
 .topbar-left h1 {
@@ -737,6 +754,9 @@ h1, h2, h3, h4, h5 {
     cursor: pointer;
     transition: var(--transition);
     text-decoration: none;
+    user-select: none;
+    position: relative;
+    z-index: 2;
 }
 
 .btn:active {
@@ -779,6 +799,7 @@ h1, h2, h3, h4, h5 {
     border-radius: var(--radius-sm);
     font-weight: 600;
     border: 1px solid var(--primary-border);
+    cursor: pointer;
 }
 
 .btn-edit:hover {
@@ -794,6 +815,7 @@ h1, h2, h3, h4, h5 {
     border-radius: var(--radius-sm);
     font-weight: 600;
     border: 1px solid var(--danger-border);
+    cursor: pointer;
 }
 
 .btn-delete:hover {
@@ -991,28 +1013,27 @@ tbody td {
 }
 
 /* ==========================================================================
-   Modal Dialog
+   Modal Dialog (Fixed to prevent blocking clicks)
    ========================================================================== */
 .modal-overlay {
-    display: none;
+    display: none !important;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background: rgba(15, 23, 42, 0.6);
-    z-index: 1000;
+    z-index: 9999;
     justify-content: center;
     align-items: center;
     backdrop-filter: blur(6px);
     padding: 20px;
-    opacity: 0;
-    transition: opacity 0.25s ease;
+    pointer-events: none;
 }
 
 .modal-overlay.active {
-    display: flex;
-    opacity: 1;
+    display: flex !important;
+    pointer-events: auto;
 }
 
 .modal {
@@ -1023,12 +1044,19 @@ tbody td {
     box-shadow: var(--shadow-xl);
     border: 1px solid var(--card-border);
     overflow: hidden;
-    transform: scale(0.95) translateY(-10px);
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: modalIn 0.22s ease-out;
+    pointer-events: auto;
 }
 
-.modal-overlay.active .modal {
-    transform: scale(1) translateY(0);
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .modal-header {
@@ -1105,7 +1133,7 @@ tbody td {
 }
 
 /* ==========================================================================
-   Footer & Toast
+   Footer & Toast Notifications (Pointer Events Cleaned)
    ========================================================================== */
 .footer {
     padding: 20px 32px;
@@ -1120,10 +1148,11 @@ tbody td {
     position: fixed;
     top: 20px;
     right: 20px;
-    z-index: 2000;
+    z-index: 10000;
     display: flex;
     flex-direction: column;
     gap: 8px;
+    pointer-events: none; /* Crucial: stops toast container from blocking clicks */
 }
 
 .toast {
@@ -1138,6 +1167,7 @@ tbody td {
     display: flex;
     align-items: center;
     gap: 8px;
+    pointer-events: auto;
 }
 
 .toast-success { background: linear-gradient(135deg, #10b981, #059669); }
@@ -1182,8 +1212,6 @@ tbody td {
 
     .mobile-toggle {
         display: inline-flex;
-        align-items: center;
-        justify-content: center;
     }
 
     .topbar {

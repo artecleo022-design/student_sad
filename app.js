@@ -428,6 +428,16 @@ function showLoading(show) {
 }
 
 // ──────────────────────────────────────────────
+// Global Function Bindings
+// ──────────────────────────────────────────────
+window.switchView = switchView;
+window.toggleSidebar = toggleSidebar;
+window.openEditModal = openEditModal;
+window.closeModal = closeModal;
+window.deleteStudent = deleteStudent;
+window.fetchStudents = fetchStudents;
+
+// ──────────────────────────────────────────────
 // Initialize
 // ──────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
