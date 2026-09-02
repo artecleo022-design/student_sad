@@ -1,6 +1,6 @@
 /* ==========================================================================
    STUDENT RECORD MANAGEMENT SYSTEM
-   Sidebar Navigation + Dashboard Analytics Theme
+   Sidebar Navigation + Dedicated Views Theme
    ========================================================================== */
 
 :root {
@@ -194,6 +194,7 @@ h1, h2, h3, h4, h5 {
     font-size: 0.88rem;
     font-weight: 500;
     transition: var(--transition);
+    cursor: pointer;
 }
 
 .nav-link i {
@@ -409,14 +410,27 @@ h1, h2, h3, h4, h5 {
 }
 
 /* ==========================================================================
-   Page Content & Dashboard Grid
+   Page Content & Views Switching (SPA)
    ========================================================================== */
 .page-content {
     padding: 28px 32px;
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 28px;
+}
+
+/* App View Containers */
+.app-view {
+    display: none;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.app-view.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Dashboard 4 Stat Cards */
@@ -424,6 +438,7 @@ h1, h2, h3, h4, h5 {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
+    margin-bottom: 24px;
 }
 
 .stat-card {
@@ -494,6 +509,40 @@ h1, h2, h3, h4, h5 {
 .stat-icon.purple { background: #f5f3ff; color: var(--accent-purple); }
 .stat-icon.amber { background: #fffbeb; color: var(--accent-amber); }
 
+/* Banner Card in Dashboard */
+.banner-card {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    border: none;
+    padding: 36px 32px;
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.banner-text h2 {
+    color: #ffffff;
+    font-size: 1.35rem;
+    margin-bottom: 6px;
+}
+
+.banner-text p {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    max-width: 520px;
+}
+
+.banner-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 /* ==========================================================================
    Cards, Forms & Table
    ========================================================================== */
@@ -559,6 +608,12 @@ h1, h2, h3, h4, h5 {
     color: var(--text-muted);
     display: block;
     margin-top: 2px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .record-badge {

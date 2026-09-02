@@ -41,22 +41,22 @@
             </div>
 
             <nav class="sidebar-nav">
-                <div class="nav-title">Navigation</div>
-                <a href="#dashboardSection" class="nav-link active" onclick="scrollToSection('dashboardSection')">
+                <div class="nav-title">Navigation Menu</div>
+                <a href="javascript:void(0)" class="nav-link active" id="navDashboard" onclick="switchView('dashboard')">
                     <i class="fa-solid fa-chart-pie"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="#formSection" class="nav-link" onclick="scrollToSection('formSection')">
+                <a href="javascript:void(0)" class="nav-link" id="navAdd" onclick="switchView('add')">
                     <i class="fa-solid fa-user-plus"></i>
                     <span>Add Student</span>
                 </a>
-                <a href="#recordsSection" class="nav-link" onclick="scrollToSection('recordsSection')">
+                <a href="javascript:void(0)" class="nav-link" id="navRecords" onclick="switchView('records')">
                     <i class="fa-solid fa-table-list"></i>
                     <span>Student Records</span>
                     <span class="nav-badge" id="navBadge">0</span>
                 </a>
 
-                <div class="nav-title">Database</div>
+                <div class="nav-title">System Status</div>
                 <div class="db-card">
                     <div class="db-header">
                         <span class="pulse-dot"></span>
@@ -73,7 +73,7 @@
                     </div>
                     <div class="user-text">
                         <h4>Admin Portal</h4>
-                        <span>Registrar</span>
+                        <span>Registrar Office</span>
                     </div>
                 </div>
             </div>
@@ -89,11 +89,11 @@
                         <i class="fa-solid fa-bars-staggered"></i>
                     </button>
                     <div>
-                        <h1>Student Portal</h1>
+                        <h1 id="viewTitle">Dashboard Overview</h1>
                         <div class="breadcrumb">
-                            <span>Home</span>
+                            <span>System</span>
                             <i class="fa-solid fa-angle-right"></i>
-                            <span class="active-crumb">Dashboard & Records</span>
+                            <span class="active-crumb" id="viewBreadcrumb">Analytics</span>
                         </div>
                     </div>
                 </div>
@@ -110,196 +110,238 @@
                 </div>
             </header>
 
-            <!-- Main Page Content -->
+            <!-- Main Page Content (Separate Views) -->
             <main class="page-content">
 
-                <!-- Dashboard Stats Grid -->
-                <section class="dashboard-grid" id="dashboardSection">
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <span class="stat-label">Total Students</span>
-                            <h3 class="stat-value" id="statTotal">0</h3>
-                            <span class="stat-desc"><i class="fa-solid fa-users"></i> Registered</span>
-                        </div>
-                        <div class="stat-icon emerald">
-                            <i class="fa-solid fa-user-graduate"></i>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <span class="stat-label">Total Programs</span>
-                            <h3 class="stat-value" id="statPrograms">0</h3>
-                            <span class="stat-desc"><i class="fa-solid fa-book-bookmark"></i> Academic Courses</span>
-                        </div>
-                        <div class="stat-icon cyan">
-                            <i class="fa-solid fa-diagram-project"></i>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <span class="stat-label">Average Year</span>
-                            <h3 class="stat-value" id="statAvgYear">0.0</h3>
-                            <span class="stat-desc"><i class="fa-solid fa-chart-line"></i> Year Distribution</span>
-                        </div>
-                        <div class="stat-icon purple">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-info">
-                            <span class="stat-label">Last Updated</span>
-                            <h3 class="stat-value small-date" id="statRecentDate">—</h3>
-                            <span class="stat-desc"><i class="fa-regular fa-calendar-check"></i> Latest Entry</span>
-                        </div>
-                        <div class="stat-icon amber">
-                            <i class="fa-solid fa-clock-rotate-left"></i>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Form Card: Add Student -->
-                <section class="card form-card" id="formSection">
-                    <div class="card-header">
-                        <div class="header-title-wrap">
-                            <div class="header-icon-box">
-                                <i class="fa-solid fa-user-plus"></i>
+                <!-- ============================================
+                     VIEW 1: DASHBOARD OVERVIEW
+                     ============================================ -->
+                <div class="app-view active" id="viewDashboard">
+                    <!-- Dashboard 4 Stat Cards -->
+                    <section class="dashboard-grid">
+                        <div class="stat-card" onclick="switchView('records')" style="cursor: pointer;" title="View all records">
+                            <div class="stat-info">
+                                <span class="stat-label">Total Students</span>
+                                <h3 class="stat-value" id="statTotal">0</h3>
+                                <span class="stat-desc"><i class="fa-solid fa-users"></i> Registered</span>
                             </div>
-                            <div>
-                                <h2>Add New Student</h2>
-                                <span class="card-subtitle">Fill in student details to store in Supabase</span>
+                            <div class="stat-icon emerald">
+                                <i class="fa-solid fa-user-graduate"></i>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="card-body">
-                        <form id="studentForm" class="student-form">
-                            <div class="form-grid">
-                                
-                                <div class="form-group">
-                                    <label for="studentId">Student ID <span class="required">*</span></label>
-                                    <div class="input-with-icon">
-                                        <i class="fa-solid fa-id-badge input-ico"></i>
-                                        <input type="text" id="studentId" placeholder="e.g. 2024-0001" required autocomplete="off">
-                                    </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="fullName">Full Name <span class="required">*</span></label>
-                                    <div class="input-with-icon">
-                                        <i class="fa-solid fa-user input-ico"></i>
-                                        <input type="text" id="fullName" placeholder="e.g. Juan Dela Cruz" required autocomplete="off">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="program">Program <span class="required">*</span></label>
-                                    <div class="input-with-icon">
-                                        <i class="fa-solid fa-graduation-cap input-ico"></i>
-                                        <input type="text" id="program" placeholder="e.g. BSIT" required autocomplete="off">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="yearLevel">Year Level <span class="required">*</span></label>
-                                    <div class="input-with-icon">
-                                        <i class="fa-solid fa-layer-group input-ico"></i>
-                                        <select id="yearLevel" required>
-                                            <option value="" disabled selected>Select Year Level</option>
-                                            <option value="1">1st Year</option>
-                                            <option value="2">2nd Year</option>
-                                            <option value="3">3rd Year</option>
-                                            <option value="4">4th Year</option>
-                                            <option value="5">5th Year</option>
-                                            <option value="6">6th Year</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group form-group-full">
-                                    <label for="email">Email Address <span class="required">*</span></label>
-                                    <div class="input-with-icon">
-                                        <i class="fa-solid fa-envelope input-ico"></i>
-                                        <input type="email" id="email" placeholder="e.g. juan@email.com" required autocomplete="off">
-                                    </div>
-                                </div>
-
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <span class="stat-label">Total Programs</span>
+                                <h3 class="stat-value" id="statPrograms">0</h3>
+                                <span class="stat-desc"><i class="fa-solid fa-book-bookmark"></i> Academic Courses</span>
                             </div>
+                            <div class="stat-icon cyan">
+                                <i class="fa-solid fa-diagram-project"></i>
+                            </div>
+                        </div>
 
-                            <div class="form-actions">
-                                <button type="submit" class="btn btn-primary" id="saveBtn">
-                                    <i class="fa-solid fa-floppy-disk"></i>
-                                    <span>Save Student</span>
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <span class="stat-label">Average Year</span>
+                                <h3 class="stat-value" id="statAvgYear">0.0</h3>
+                                <span class="stat-desc"><i class="fa-solid fa-chart-line"></i> Year Distribution</span>
+                            </div>
+                            <div class="stat-icon purple">
+                                <i class="fa-solid fa-layer-group"></i>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-info">
+                                <span class="stat-label">Last Updated</span>
+                                <h3 class="stat-value small-date" id="statRecentDate">—</h3>
+                                <span class="stat-desc"><i class="fa-regular fa-calendar-check"></i> Latest Entry</span>
+                            </div>
+                            <div class="stat-icon amber">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Quick Navigation Banner / Quick Actions -->
+                    <section class="card banner-card">
+                        <div class="banner-content">
+                            <div class="banner-text">
+                                <h2>Student Information Portal</h2>
+                                <p>Easily register new students or manage and search existing student records with real-time cloud sync.</p>
+                            </div>
+                            <div class="banner-buttons">
+                                <button class="btn btn-primary" onclick="switchView('add')">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                    <span>Add New Student</span>
                                 </button>
-                                <button type="reset" class="btn btn-secondary">
-                                    <i class="fa-solid fa-rotate-left"></i>
-                                    <span>Clear</span>
+                                <button class="btn btn-secondary" onclick="switchView('records')">
+                                    <i class="fa-solid fa-table-list"></i>
+                                    <span>View Student Directory</span>
                                 </button>
                             </div>
-                        </form>
-                    </div>
-                </section>
+                        </div>
+                    </section>
+                </div>
 
-                <!-- Table Card: Student Records -->
-                <section class="card table-card" id="recordsSection">
-                    <div class="card-header flex-between">
-                        <div class="header-title-wrap">
-                            <div class="header-icon-box purple-icon">
-                                <i class="fa-solid fa-address-book"></i>
+                <!-- ============================================
+                     VIEW 2: ADD STUDENT ONLY
+                     ============================================ -->
+                <div class="app-view" id="viewAdd">
+                    <section class="card form-card">
+                        <div class="card-header">
+                            <div class="header-title-wrap">
+                                <div class="header-icon-box">
+                                    <i class="fa-solid fa-user-plus"></i>
+                                </div>
+                                <div>
+                                    <h2>Enroll New Student</h2>
+                                    <span class="card-subtitle">Fill in student details to save to database</span>
+                                </div>
                             </div>
-                            <div>
-                                <h2>Student Records</h2>
-                                <span class="card-subtitle">Real-time records from PostgreSQL database</span>
+                        </div>
+                        
+                        <div class="card-body">
+                            <form id="studentForm" class="student-form">
+                                <div class="form-grid">
+                                    
+                                    <div class="form-group">
+                                        <label for="studentId">Student ID <span class="required">*</span></label>
+                                        <div class="input-with-icon">
+                                            <i class="fa-solid fa-id-badge input-ico"></i>
+                                            <input type="text" id="studentId" placeholder="e.g. 2024-0001" required autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="fullName">Full Name <span class="required">*</span></label>
+                                        <div class="input-with-icon">
+                                            <i class="fa-solid fa-user input-ico"></i>
+                                            <input type="text" id="fullName" placeholder="e.g. Juan Dela Cruz" required autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="program">Program <span class="required">*</span></label>
+                                        <div class="input-with-icon">
+                                            <i class="fa-solid fa-graduation-cap input-ico"></i>
+                                            <input type="text" id="program" placeholder="e.g. BSIT" required autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="yearLevel">Year Level <span class="required">*</span></label>
+                                        <div class="input-with-icon">
+                                            <i class="fa-solid fa-layer-group input-ico"></i>
+                                            <select id="yearLevel" required>
+                                                <option value="" disabled selected>Select Year Level</option>
+                                                <option value="1">1st Year</option>
+                                                <option value="2">2nd Year</option>
+                                                <option value="3">3rd Year</option>
+                                                <option value="4">4th Year</option>
+                                                <option value="5">5th Year</option>
+                                                <option value="6">6th Year</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group form-group-full">
+                                        <label for="email">Email Address <span class="required">*</span></label>
+                                        <div class="input-with-icon">
+                                            <i class="fa-solid fa-envelope input-ico"></i>
+                                            <input type="email" id="email" placeholder="e.g. juan@email.com" required autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary" id="saveBtn">
+                                        <i class="fa-solid fa-floppy-disk"></i>
+                                        <span>Save Student</span>
+                                    </button>
+                                    <button type="reset" class="btn btn-secondary">
+                                        <i class="fa-solid fa-rotate-left"></i>
+                                        <span>Clear</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- ============================================
+                     VIEW 3: STUDENT RECORDS ONLY
+                     ============================================ -->
+                <div class="app-view" id="viewRecords">
+                    <section class="card table-card">
+                        <div class="card-header flex-between">
+                            <div class="header-title-wrap">
+                                <div class="header-icon-box purple-icon">
+                                    <i class="fa-solid fa-address-book"></i>
+                                </div>
+                                <div>
+                                    <h2>Student Records Directory</h2>
+                                    <span class="card-subtitle">Real-time records from PostgreSQL database</span>
+                                </div>
+                            </div>
+                            <div class="header-actions">
+                                <button class="btn btn-primary btn-sm" onclick="switchView('add')">
+                                    <i class="fa-solid fa-plus"></i>
+                                    <span>New Student</span>
+                                </button>
+                                <span class="record-badge" id="recordCount">0 records</span>
                             </div>
                         </div>
-                        <span class="record-badge" id="recordCount">0 records</span>
-                    </div>
 
-                    <div class="card-body">
-                        <!-- Search Bar -->
-                        <div class="search-box">
-                            <i class="fa-solid fa-magnifying-glass search-icon"></i>
-                            <input type="text" id="searchInput" placeholder="Search by Student ID, Name, or Program...">
-                        </div>
-
-                        <!-- Table Wrapper -->
-                        <div class="table-wrapper">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th style="width: 50px;">#</th>
-                                        <th style="width: 140px;">Student ID</th>
-                                        <th>Full Name</th>
-                                        <th>Program</th>
-                                        <th style="width: 110px; text-align: center;">Year Level</th>
-                                        <th>Email</th>
-                                        <th style="width: 150px; text-align: center;">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="studentTableBody">
-                                    <!-- Rows loaded dynamically by JavaScript -->
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Loading Spinner -->
-                        <div class="loading" id="loadingSpinner" style="display: none;">
-                            <div class="spinner-ring"></div>
-                            <p>Fetching records from Supabase...</p>
-                        </div>
-
-                        <!-- Empty State -->
-                        <div class="empty-state" id="emptyState" style="display: none;">
-                            <div class="empty-icon-circle">
-                                <i class="fa-solid fa-folder-open"></i>
+                        <div class="card-body">
+                            <!-- Search Bar -->
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                                <input type="text" id="searchInput" placeholder="Search by Student ID, Name, or Program...">
                             </div>
-                            <h3>No Records Found</h3>
-                            <p>There are no students listed yet. Fill in the form above to add a student.</p>
+
+                            <!-- Table Wrapper -->
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 50px;">#</th>
+                                            <th style="width: 140px;">Student ID</th>
+                                            <th>Full Name</th>
+                                            <th>Program</th>
+                                            <th style="width: 110px; text-align: center;">Year Level</th>
+                                            <th>Email</th>
+                                            <th style="width: 150px; text-align: center;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="studentTableBody">
+                                        <!-- Rows loaded dynamically by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Loading Spinner -->
+                            <div class="loading" id="loadingSpinner" style="display: none;">
+                                <div class="spinner-ring"></div>
+                                <p>Fetching records from Supabase...</p>
+                            </div>
+
+                            <!-- Empty State -->
+                            <div class="empty-state" id="emptyState" style="display: none;">
+                                <div class="empty-icon-circle">
+                                    <i class="fa-solid fa-folder-open"></i>
+                                </div>
+                                <h3>No Records Found</h3>
+                                <p>There are no students listed yet.</p>
+                                <button class="btn btn-primary mt-3" onclick="switchView('add')" style="margin-top: 14px;">
+                                    <i class="fa-solid fa-user-plus"></i> Add Student Now
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
 
             </main>
 

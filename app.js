@@ -28,6 +28,10 @@ const toastContainer = document.getElementById('toastContainer');
 const refreshIcon = document.getElementById('refreshIcon');
 const currentTime = document.getElementById('currentTime');
 
+// Topbar Titles
+const viewTitle = document.getElementById('viewTitle');
+const viewBreadcrumb = document.getElementById('viewBreadcrumb');
+
 // Dashboard Stats Elements
 const statTotal = document.getElementById('statTotal');
 const statPrograms = document.getElementById('statPrograms');
@@ -50,30 +54,48 @@ setInterval(updateClock, 1000);
 updateClock();
 
 // ──────────────────────────────────────────────
-// Sidebar & Navigation
+// Sidebar & View Switching (SPA)
 // ──────────────────────────────────────────────
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     if (sidebar) sidebar.classList.toggle('open');
 }
 
-function scrollToSection(sectionId) {
-    const el = document.getElementById(sectionId);
-    if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+function switchView(viewName) {
+    // Hide all views
+    document.querySelectorAll('.app-view').forEach(view => {
+        view.classList.remove('active');
+    });
+
+    // Remove active class from all nav links
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+
+    // Close sidebar on mobile
     const sidebar = document.getElementById('sidebar');
     if (sidebar && sidebar.classList.contains('open')) {
         sidebar.classList.remove('open');
     }
 
-    // Update active nav link
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${sectionId}`) {
-            link.classList.add('active');
-        }
-    });
+    if (viewName === 'dashboard') {
+        document.getElementById('viewDashboard').classList.add('active');
+        document.getElementById('navDashboard').classList.add('active');
+        if (viewTitle) viewTitle.textContent = 'Dashboard Overview';
+        if (viewBreadcrumb) viewBreadcrumb.textContent = 'Analytics';
+    } else if (viewName === 'add') {
+        document.getElementById('viewAdd').classList.add('active');
+        document.getElementById('navAdd').classList.add('active');
+        if (viewTitle) viewTitle.textContent = 'Student Registration';
+        if (viewBreadcrumb) viewBreadcrumb.textContent = 'Enroll Student';
+    } else if (viewName === 'records') {
+        document.getElementById('viewRecords').classList.add('active');
+        document.getElementById('navRecords').classList.add('active');
+        if (viewTitle) viewTitle.textContent = 'Student Directory';
+        if (viewBreadcrumb) viewBreadcrumb.textContent = 'Records Table';
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // ──────────────────────────────────────────────
@@ -247,6 +269,11 @@ studentForm.addEventListener('submit', async (e) => {
         showToast('Student enrolled successfully!', 'success');
         studentForm.reset();
         await fetchStudents(searchInput.value);
+
+        // Automatically switch to Records Directory view so the user can see the new student
+        setTimeout(() => {
+            switchView('records');
+        }, 600);
     } catch (err) {
         console.error('Error adding student:', err);
         showToast('Failed to add student. Please try again.', 'error');
